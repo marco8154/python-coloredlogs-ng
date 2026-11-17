@@ -203,6 +203,9 @@ class ColoredLogsTestCase(TestCase):
 
     def test_syslog_shortcut_simple(self):
         """Make sure that ``coloredlogs.install(syslog=True)`` works."""
+        if not is_syslog_supported():
+            # As of release 15.0 system logging is not enabled on MacOS and Windows.
+            return self.skipTest("system logging is disabled on this platform")
         system_log_file = self.find_system_log()
         expected_message = random_string(50)
         with cleanup_handlers():
@@ -214,6 +217,9 @@ class ColoredLogsTestCase(TestCase):
 
     def test_syslog_shortcut_enhanced(self):
         """Make sure that ``coloredlogs.install(syslog='warning')`` works."""
+        if not is_syslog_supported():
+            # As of release 15.0 system logging is not enabled on MacOS and Windows.
+            return self.skipTest("system logging is disabled on this platform")
         system_log_file = self.find_system_log()
         the_expected_message = random_string(50)
         not_an_expected_message = random_string(50)
