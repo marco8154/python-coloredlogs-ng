@@ -18,7 +18,7 @@ import tempfile
 import unittest
 
 # External dependencies.
-from humanfriendly.compat import StringIO
+from humanfriendly.compat import StringIO, on_windows
 from humanfriendly.terminal import ANSI_COLOR_CODES, ANSI_CSI, ansi_style, ansi_wrap
 from humanfriendly.testing import PatchedAttribute, PatchedItem, TestCase, retry
 from humanfriendly.text import format, random_string
@@ -123,6 +123,7 @@ class ColoredLogsTestCase(TestCase):
         # Make sure bogus level names don't blow up.
         assert level_to_number('bogus-level') == logging.INFO
 
+    @unittest.skipIf(on_windows(), "the test reopens a named temporary file, Windows doesn't allow that")
     def test_find_hostname(self):
         """Make sure :func:`~find_hostname()` works correctly."""
         assert find_hostname()
@@ -347,6 +348,7 @@ class ColoredLogsTestCase(TestCase):
         grand_child = logging.getLogger(grand_child_name)
         return root, parent, child, grand_child
 
+    @unittest.skipIf(on_windows(), "known bug: on Windows colors are enabled for streams that are not terminals")
     def test_support_for_milliseconds(self):
         """Make sure milliseconds are hidden by default but can be easily enabled."""
         # Check that the default log format doesn't include milliseconds.
@@ -360,6 +362,7 @@ class ColoredLogsTestCase(TestCase):
         logging.info("This should include milliseconds.")
         assert all(map(PATTERN_INCLUDING_MILLISECONDS.match, stream.getvalue().splitlines()))
 
+    @unittest.skipIf(on_windows(), "known bug: on Windows colors are enabled for streams that are not terminals")
     def test_support_for_milliseconds_directive(self):
         """Make sure milliseconds using the ``%f`` directive are supported."""
         stream = StringIO()
@@ -367,6 +370,7 @@ class ColoredLogsTestCase(TestCase):
         logging.info("This should be timestamped according to #45.")
         assert re.match(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{4}\s', stream.getvalue())
 
+    @unittest.skipIf(on_windows(), "known bug: on Windows colors are enabled for streams that are not terminals")
     def test_plain_text_output_format(self):
         """Inspect the plain text output of coloredlogs."""
         logger = VerboseLogger(random_string(25))
@@ -537,12 +541,14 @@ class ColoredLogsTestCase(TestCase):
         )
         self.assertEqual(expected_html, convert(ansi_encoded_text))
 
+    @unittest.skipIf(on_windows(), "the converter needs the `script' program and pseudo terminals")
     def test_output_interception(self):
         """Test capturing of output from external commands."""
         expected_output = 'testing, 1, 2, 3 ..'
         actual_output = capture(['echo', expected_output])
         assert actual_output.strip() == expected_output.strip()
 
+    @unittest.skipIf(on_windows(), "the converter needs the `script' program and pseudo terminals")
     def test_enable_colored_cron_mailer(self):
         """Test that automatic ANSI to HTML conversion when running under ``cron`` can be enabled."""
         with PatchedItem(os.environ, 'CONTENT_TYPE', 'text/html'):
@@ -584,12 +590,14 @@ class ColoredLogsTestCase(TestCase):
         for name in 'debug', 'info', 'warning', 'error', 'critical':
             assert name.upper() in output
 
+    @unittest.skipIf(on_windows(), "the converter needs the `script' program and pseudo terminals")
     def test_cli_conversion(self):
         """Test the command line HTML conversion."""
         output = main('coloredlogs', '--convert', 'coloredlogs', '--demo', capture=True)
         # Make sure the output is encoded as HTML.
         assert '<span' in output
 
+    @unittest.skipIf(on_windows(), "the converter needs the `script' program and pseudo terminals")
     def test_empty_conversion(self):
         """
         Test that conversion of empty output produces no HTML.
