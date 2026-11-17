@@ -1,0 +1,84 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "coloredlogs-ng"
+dynamic = ["version"]
+description = "Colored terminal output for Python's logging module"
+readme = "README.rst"
+license = "MIT"
+license-files = ["LICENSE.txt"]
+authors = [{ name = "Peter Odding", email = "peter@peterodding.com" }]
+maintainers = [{ name = "marco8154" }]
+requires-python = ">=3.10"
+dependencies = ["humanfriendly-ng"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Communications",
+    "Topic :: Scientific/Engineering :: Human Machine Interfaces",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: User Interfaces",
+    "Topic :: System",
+    "Topic :: System :: Shells",
+    "Topic :: System :: System Shells",
+    "Topic :: System :: Console Fonts",
+    "Topic :: System :: Logging",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Terminals",
+    "Topic :: Utilities",
+]
+
+[project.optional-dependencies]
+cron = ["capturer-ng"]
+
+[project.urls]
+Homepage = "https://github.com/marco8154/python-coloredlogs-ng"
+Documentation = "https://coloredlogs.readthedocs.io"
+Changelog = "https://github.com/marco8154/python-coloredlogs-ng/blob/master/CHANGELOG.rst"
+"Original project" = "https://github.com/xolox/python-coloredlogs"
+
+[project.scripts]
+coloredlogs = "coloredlogs.cli:main"
+
+[tool.hatch.version]
+path = "coloredlogs/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["coloredlogs"]
+
+# The path configuration file has to end up in the site-packages directory,
+# next to the package. Its contents must not change without a very good
+# reason: Python executes it during the startup of every process.
+[tool.hatch.build.targets.wheel.force-include]
+"coloredlogs.pth" = "coloredlogs.pth"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/coloredlogs",
+    "/coloredlogs.pth",
+    "/docs",
+    "/scripts",
+    "/*.rst",
+    "/*.txt",
+    "/tox.ini",
+]

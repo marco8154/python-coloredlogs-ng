@@ -15,6 +15,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import unittest
 
 # External dependencies.
 from humanfriendly.compat import StringIO
@@ -55,7 +56,11 @@ from coloredlogs.converter import (
 )
 
 # External test dependencies.
-from capturer import CaptureOutput
+try:
+    from capturer import CaptureOutput
+except ImportError:
+    # The capturer package requires pseudo terminals (it doesn't work on Windows).
+    CaptureOutput = None
 from verboselogs import VerboseLogger
 
 # Compiled regular expression that matches a single line of output produced by
@@ -143,6 +148,7 @@ class ColoredLogsTestCase(TestCase):
             # Clean up.
             CHROOT_FILES.pop(0)
 
+    @unittest.skipIf(CaptureOutput is None, "requires pseudo terminals (the capturer package)")
     def test_host_name_filter(self):
         """Make sure :func:`install()` integrates with :class:`~coloredlogs.HostNameFilter()`."""
         install(fmt='%(hostname)s')
@@ -151,6 +157,7 @@ class ColoredLogsTestCase(TestCase):
             output = capturer.get_text()
             assert find_hostname() in output
 
+    @unittest.skipIf(CaptureOutput is None, "requires pseudo terminals (the capturer package)")
     def test_program_name_filter(self):
         """Make sure :func:`install()` integrates with :class:`~coloredlogs.ProgramNameFilter()`."""
         install(fmt='%(programname)s')
@@ -159,6 +166,7 @@ class ColoredLogsTestCase(TestCase):
             output = capturer.get_text()
             assert find_program_name() in output
 
+    @unittest.skipIf(CaptureOutput is None, "requires pseudo terminals (the capturer package)")
     def test_username_filter(self):
         """Make sure :func:`install()` integrates with :class:`~coloredlogs.UserNameFilter()`."""
         install(fmt='%(username)s')
@@ -424,6 +432,7 @@ class ColoredLogsTestCase(TestCase):
         stdout, stderr = interpreter.communicate()
         assert ANSI_CSI in stderr.decode('UTF-8')
 
+    @unittest.skipIf(CaptureOutput is None, "requires pseudo terminals (the capturer package)")
     def test_auto_disable(self):
         """
         Make sure ANSI escape sequences are not emitted when logging output is being redirected.
@@ -453,6 +462,7 @@ class ColoredLogsTestCase(TestCase):
             stdout, stderr = interpreter.communicate()
             assert ANSI_CSI not in stderr.decode('UTF-8')
 
+    @unittest.skipIf(CaptureOutput is None, "requires pseudo terminals (the capturer package)")
     def test_env_disable(self):
         """Make sure ANSI escape sequences can be disabled using ``$NO_COLOR``."""
         with PatchedItem(os.environ, 'NO_COLOR', 'I like monochrome'):
@@ -545,6 +555,7 @@ class ColoredLogsTestCase(TestCase):
             with ColoredCronMailer() as mailer:
                 assert not mailer.is_enabled
 
+    @unittest.skipIf(CaptureOutput is None, "requires pseudo terminals (the capturer package)")
     def test_auto_install(self):
         """Test :func:`coloredlogs.auto_install()`."""
         needle = random_string()
@@ -563,6 +574,7 @@ class ColoredLogsTestCase(TestCase):
             output = capturer.get_text()
         assert needle in output
 
+    @unittest.skipIf(CaptureOutput is None, "requires pseudo terminals (the capturer package)")
     def test_cli_demo(self):
         """Test the command line colored logging demonstration."""
         with CaptureOutput() as capturer:
@@ -608,9 +620,6 @@ class ColoredLogsTestCase(TestCase):
         exceptions so that we can tell after it was called whether any
         exceptions occurred (despite the exceptions not propagating).
         """
-        if not hasattr(logging, 'getLogRecordFactory'):
-            return self.skipTest("this test requires Python >= 3.2")
-
         exceptions = []
         original_method = ColoredFormatter.format
         original_factory = logging.getLogRecordFactory()

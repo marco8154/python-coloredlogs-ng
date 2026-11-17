@@ -1,17 +1,14 @@
 coloredlogs: Colored terminal output for Python's logging module
 ================================================================
 
-.. image:: https://travis-ci.org/xolox/python-coloredlogs.svg?branch=master
-   :target: https://travis-ci.org/xolox/python-coloredlogs
-
-.. image:: https://coveralls.io/repos/github/xolox/python-coloredlogs/badge.svg?branch=master
-   :target: https://coveralls.io/github/xolox/python-coloredlogs?branch=master
+.. image:: https://github.com/marco8154/python-coloredlogs-ng/actions/workflows/test.yml/badge.svg?branch=master
+   :target: https://github.com/marco8154/python-coloredlogs-ng/actions
 
 The `coloredlogs` package enables colored terminal output for Python's logging_
 module. The ColoredFormatter_ class inherits from `logging.Formatter`_ and uses
 `ANSI escape sequences`_ to render your logging messages in color. It uses only
 standard colors so it should work on any UNIX terminal. It's currently tested
-on Python 2.7, 3.5+ and PyPy (2 and 3). On Windows `coloredlogs` automatically
+on Python 3.10 and newer. On Windows `coloredlogs` automatically
 tries to enable native ANSI support (on up-to-date Windows 10 installations)
 and falls back on using colorama_ (if installed). Here is a screen shot of the
 demo that is printed when the command ``coloredlogs --demo`` is executed:
@@ -26,6 +23,35 @@ will Just Work (`verboselogs` is of course not required to use
 .. contents::
    :local:
 
+Maintenance status
+------------------
+
+This is a continuation of ``coloredlogs``, originally written by Peter Odding
+(`@xolox <https://github.com/xolox>`_), whose last release was 15.0.1 in 2021.
+The original author is not involved in this continuation. Should he return or
+want the project back, it will be handed over.
+
+This continuation is **maintained by one person with AI agents, without
+independent review**. In practice that means:
+
+- Changes are written and checked with the help of AI coding agents. A second
+  AI model is used as an additional check. That is a tool, not an independent
+  human review.
+- There is no second maintainer who reads every change before a release.
+- The goal is to keep the package working on current Python versions. The API
+  and behaviour are meant to stay the same. Licence (MIT) and copyright are
+  unchanged.
+- Releases are built by GitHub Actions and published to PyPI through Trusted
+  Publishing, so every release can be traced to a tagged commit.
+
+Install it with ``pip install coloredlogs-ng``. The import name is unchanged
+(``import coloredlogs``), so do not install it next to the original
+``coloredlogs`` distribution: both ship the same files and would overwrite
+each other.
+
+If you depend on this package in production, please pin a version and read the
+changelog before upgrading. Reviews, bug reports and co-maintainers are welcome.
+
 Installation
 ------------
 
@@ -34,7 +60,7 @@ be as simple as:
 
 .. code-block:: console
 
-   $ pip install coloredlogs
+   $ pip install coloredlogs-ng
 
 There's actually a multitude of ways to install Python packages (e.g. the `per
 user site-packages directory`_, `virtual environments`_ or just installing
@@ -187,7 +213,7 @@ enables HTML output when the ``$CONTENT_TYPE`` variable has been correctly set
 in the crontab.
 
 This requires my capturer_ package which you can install using ``pip install
-'coloredlogs[cron]'``. The ``[cron]`` extra will pull in capturer_ 2.4 or newer
+'coloredlogs-ng[cron]'``. The ``[cron]`` extra will pull in capturer_ 2.4 or newer
 which is required to capture the output while silencing it - otherwise you'd
 get duplicate output in the emails sent by ``cron``.
 
@@ -201,9 +227,8 @@ Contact
 
 The latest version of `coloredlogs` is available on PyPI_ and GitHub_. The
 `online documentation`_ is available on Read The Docs and includes a
-changelog_. For bug reports please create an issue on GitHub_. If you have
-questions, suggestions, etc. feel free to send me an e-mail at
-`peter@peterodding.com`_.
+changelog_. For bug reports please create an issue on GitHub_. Please do not contact the
+original author about problems with this continuation.
 
 License
 -------
@@ -224,7 +249,7 @@ This software is licensed under the `MIT license`_.
 .. _ColoredFormatter: https://coloredlogs.readthedocs.io/en/latest/api.html#coloredlogs.ColoredFormatter
 .. _coloredlogs.install(): https://coloredlogs.readthedocs.io/en/latest/api.html#coloredlogs.install
 .. _cron: https://en.wikipedia.org/wiki/Cron
-.. _GitHub: https://github.com/xolox/python-coloredlogs
+.. _GitHub: https://github.com/marco8154/python-coloredlogs-ng
 .. _logging.basicConfig(): https://docs.python.org/2/library/logging.html#logging.basicConfig
 .. _logging.Filter: https://docs.python.org/3/library/logging.html#filter-objects
 .. _logging.Formatter: https://docs.python.org/2/library/logging.html#logging.Formatter
@@ -232,8 +257,7 @@ This software is licensed under the `MIT license`_.
 .. _MIT license: https://en.wikipedia.org/wiki/MIT_License
 .. _online documentation: https://coloredlogs.readthedocs.io/
 .. _per user site-packages directory: https://www.python.org/dev/peps/pep-0370/
-.. _peter@peterodding.com: peter@peterodding.com
-.. _PyPI: https://pypi.org/project/coloredlogs
+.. _PyPI: https://pypi.org/project/coloredlogs-ng
 .. _release 3.0: https://coloredlogs.readthedocs.io/en/latest/changelog.html#release-3-0-2015-10-23
 .. _release 7.1: https://coloredlogs.readthedocs.io/en/latest/changelog.html#release-7-1-2017-07-15
 .. _release 9.3: https://coloredlogs.readthedocs.io/en/latest/changelog.html#release-9-3-2018-04-29

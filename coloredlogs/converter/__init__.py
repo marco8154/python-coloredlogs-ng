@@ -12,11 +12,7 @@ import os
 import re
 import subprocess
 import tempfile
-
-try:
-    from shlex import quote  # Python 3
-except ImportError:
-    from pipes import quote  # Python 2 (removed in 3.13)
+from shlex import quote
 
 # External dependencies.
 from humanfriendly.terminal import (
