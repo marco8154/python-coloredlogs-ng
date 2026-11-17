@@ -11,6 +11,49 @@ to `semantic versioning`_.
 .. _Keep a Changelog: http://keepachangelog.com/
 .. _semantic versioning: http://semver.org/
 
+`Release 16.0`_ (unreleased)
+----------------------------
+
+This is the first release of the continuation of :pypi:`coloredlogs`, published
+on PyPI as :pypi:`coloredlogs-ng`. The import name is still ``coloredlogs`` and the
+API and behavior are unchanged, so it works as a drop-in replacement. Don't
+install it next to the original distribution: both ship the same files.
+
+The original author Peter Odding is not involved in this continuation. License
+(MIT) and copyright are unchanged. The continuation is maintained by one person
+with AI agents, without independent review (see the readme).
+
+**Noteworthy changes:**
+
+- Restored compatibility of :mod:`coloredlogs.converter` (and with that the
+  ``coloredlogs --convert`` command) with Python 3.13 and newer by replacing
+  the removed ``pipes`` module with ``shlex.quote()``
+  (pull request `#120`_ by Benjamin A. Beasley).
+
+- Python 3.10 is now the oldest supported version (this is backwards
+  incompatible, which is why the major version number was bumped). Python 3.10
+  up to 3.15 are tested.
+
+- The requirement on :pypi:`humanfriendly` changed to :pypi:`humanfriendly-ng`
+  and the ``cron`` extra now pulls in :pypi:`capturer-ng`.
+
+- The ``coloredlogs.pth`` file is byte for byte the same as in release 15.0.1
+  and is installed in the same place.
+
+**Internal changes:**
+
+- The package is built with ``pyproject.toml``, tested with GitHub Actions on
+  Linux, macOS and Windows and released through PyPI Trusted Publishing. The
+  installed ``coloredlogs.pth`` file is verified on all three platforms.
+
+- The test suite can now be imported on Windows. Tests that need pseudo
+  terminals are skipped there, as are three tests that fail because of a known
+  bug that will be fixed in a later release: on Windows colors are enabled for
+  streams that are not terminals.
+
+.. _#120: https://github.com/xolox/python-coloredlogs/pull/120
+.. _Release 16.0: https://github.com/marco8154/python-coloredlogs-ng/compare/15.0.1...16.0
+
 `Release 15.0.1`_ (2021-06-11)
 ------------------------------
 

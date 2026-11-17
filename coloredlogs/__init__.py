@@ -1,7 +1,7 @@
 # Colored terminal output for Python's logging module.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 11, 2021
+# Last Change: November 17, 2026
 # URL: https://coloredlogs.readthedocs.io
 
 """
@@ -214,7 +214,7 @@ from humanfriendly.terminal import ANSI_COLOR_CODES, ansi_wrap, enable_ansi_supp
 from humanfriendly.text import format, split
 
 # Semi-standard module versioning.
-__version__ = '15.0.1'
+__version__ = '16.0'
 
 DEFAULT_LOG_LEVEL = logging.INFO
 """The default log level for :mod:`coloredlogs` (:data:`logging.INFO`)."""
