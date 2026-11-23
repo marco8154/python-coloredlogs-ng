@@ -20,7 +20,7 @@ from io import StringIO
 
 # External dependencies.
 from humanfriendly.compat import on_windows
-from humanfriendly.terminal import ANSI_COLOR_CODES, ANSI_CSI, ansi_style, ansi_wrap
+from humanfriendly.terminal import ANSI_COLOR_CODES, ANSI_CSI, ANSI_RESET, ANSI_SGR, ansi_style, ansi_wrap
 from humanfriendly.testing import PatchedAttribute, PatchedItem, TestCase, retry
 from humanfriendly.text import format, random_string
 
@@ -520,6 +520,11 @@ class ColoredLogsTestCase(TestCase):
         # Check conversion of text that uses the 256 color mode palette as a background color.
         expected_html = '<code><span style="background-color:#AF0000">256 color mode background</span></code>'
         self.assertEqual(expected_html, convert(ansi_wrap('256 color mode background', background=124)))
+        # The standard code 48;5;N and the code 39;5;N written by humanfriendly
+        # before 11.1 are both converted to a background color.
+        for code in (48, 39):
+            ansi_encoded_text = '%s%d;5;124%s256 color mode background%s' % (ANSI_CSI, code, ANSI_SGR, ANSI_RESET)
+            self.assertEqual(expected_html, convert(ansi_encoded_text))
         # Check that invalid 256 color mode indexes don't raise exceptions.
         expected_html = '<code>plain text expected</code>'
         self.assertEqual(expected_html, convert('\x1b[38;5;256mplain text expected\x1b[0m'))

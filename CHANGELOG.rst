@@ -27,6 +27,10 @@ to `semantic versioning`_.
   raised :exc:`AttributeError` before; without an explicit stream the handler
   still follows the current :data:`sys.stderr` (xolox/python-coloredlogs#125
   by Nash Aschenbath).
+- The HTML converter (``coloredlogs --convert``,
+  :func:`coloredlogs.converter.convert()`) recognizes the standard code
+  ``48;5;N`` for 256-color backgrounds. Before it only understood ``39;5;N``,
+  which is what humanfriendly wrote before 11.1; that code is still accepted.
 
 .. _Release 16.1: https://github.com/marco8154/python-coloredlogs-ng/compare/16.0...16.1
 

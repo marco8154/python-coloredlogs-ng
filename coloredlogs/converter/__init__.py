@@ -180,18 +180,20 @@ def convert(text, code=True, tabsize=4):
                 elif 100 <= number <= 107:
                     # 100-107 sets the background color from the high-intensity eight color palette.
                     background_color = BRIGHT_COLOR_PALETTE[number - 100]
-                elif number in (38, 39) and len(ansi_codes) >= 2 and ansi_codes[0] == 5:
+                elif number in (38, 39, 48) and len(ansi_codes) >= 2 and ansi_codes[0] == 5:
                     # 38;5;N is a text color in the 256 color mode palette,
-                    # 39;5;N is a background color in the 256 color mode palette.
+                    # 48;5;N is a background color in the 256 color mode palette.
+                    # 39;5;N is also read as a background color, because
+                    # humanfriendly before 11.1 wrote backgrounds that way.
                     try:
-                        # Consume the 5 following 38 or 39.
+                        # Consume the 5 following 38, 39 or 48.
                         ansi_codes.pop(0)
                         # Consume the 256 color mode color index.
                         color_index = ansi_codes.pop(0)
                         # Set the variable to the corresponding HTML/CSS color.
                         if number == 38:
                             text_color = EXTENDED_COLOR_PALETTE[color_index]
-                        elif number == 39:
+                        else:
                             background_color = EXTENDED_COLOR_PALETTE[color_index]
                     except (ValueError, IndexError):
                         pass
