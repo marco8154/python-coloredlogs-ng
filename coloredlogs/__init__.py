@@ -214,7 +214,7 @@ from humanfriendly.terminal import ANSI_COLOR_CODES, ansi_wrap, enable_ansi_supp
 from humanfriendly.text import format, split
 
 # Semi-standard module versioning.
-__version__ = '16.0'
+__version__ = '16.1'
 
 DEFAULT_LOG_LEVEL = logging.INFO
 """The default log level for :mod:`coloredlogs` (:data:`logging.INFO`)."""
@@ -444,7 +444,10 @@ def install(level=None, **kw):
                 # up being printed to the terminal in raw form. This is very
                 # user hostile, so to avoid this happening we disable color
                 # support on failure.
-                use_colors = enable_ansi_support()
+                if not enable_ansi_support():
+                    use_colors = False
+                # On success auto detection continues below: enabling ANSI
+                # support says nothing about whether 'stream' is a terminal.
             # When auto detection is enabled, and so far we encountered no
             # reason to disable color support, then we will enable color
             # support if 'stream' is connected to a terminal.

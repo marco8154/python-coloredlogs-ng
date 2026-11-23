@@ -354,7 +354,16 @@ class ColoredLogsTestCase(TestCase):
         grand_child = logging.getLogger(grand_child_name)
         return root, parent, child, grand_child
 
-    @unittest.skipIf(on_windows(), "known bug: on Windows colors are enabled for streams that are not terminals")
+    def test_no_colors_for_non_terminal_on_windows(self):
+        """Make sure enabling ANSI support on Windows doesn't force colors on streams that aren't terminals."""
+        stream = StringIO()
+        with PatchedAttribute(coloredlogs, 'on_windows', lambda: True):
+            with PatchedAttribute(coloredlogs, 'enable_ansi_support', lambda: True):
+                coloredlogs.install(stream=stream)
+                logging.info("This should not be colored.")
+        assert ANSI_CSI not in stream.getvalue()
+        assert "This should not be colored." in stream.getvalue()
+
     def test_support_for_milliseconds(self):
         """Make sure milliseconds are hidden by default but can be easily enabled."""
         # Check that the default log format doesn't include milliseconds.
@@ -368,7 +377,6 @@ class ColoredLogsTestCase(TestCase):
         logging.info("This should include milliseconds.")
         assert all(map(PATTERN_INCLUDING_MILLISECONDS.match, stream.getvalue().splitlines()))
 
-    @unittest.skipIf(on_windows(), "known bug: on Windows colors are enabled for streams that are not terminals")
     def test_support_for_milliseconds_directive(self):
         """Make sure milliseconds using the ``%f`` directive are supported."""
         stream = StringIO()
@@ -376,7 +384,6 @@ class ColoredLogsTestCase(TestCase):
         logging.info("This should be timestamped according to #45.")
         assert re.match(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{4}\s', stream.getvalue())
 
-    @unittest.skipIf(on_windows(), "known bug: on Windows colors are enabled for streams that are not terminals")
     def test_plain_text_output_format(self):
         """Inspect the plain text output of coloredlogs."""
         logger = VerboseLogger(random_string(25))

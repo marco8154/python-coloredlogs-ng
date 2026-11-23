@@ -11,6 +11,20 @@ to `semantic versioning`_.
 .. _Keep a Changelog: http://keepachangelog.com/
 .. _semantic versioning: http://semver.org/
 
+`Release 16.1`_ (unreleased)
+---------------------------
+
+**Bug fixes** (these change visible behavior):
+
+- On Windows, :func:`coloredlogs.install()` no longer writes ANSI escape
+  sequences to streams that aren't connected to a terminal (files, pipes,
+  :class:`~io.StringIO`). Enabling ANSI support was treated as the decision to
+  use colors, so the terminal check was skipped. Passing ``isatty=True`` still
+  forces colors. The three tests that were skipped on Windows because of this
+  bug run again, and a new test covers it on every platform.
+
+.. _Release 16.1: https://github.com/marco8154/python-coloredlogs-ng/compare/16.0...16.1
+
 `Release 16.0`_ (2026-11-23)
 ----------------------------
 
