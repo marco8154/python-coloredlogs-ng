@@ -16,9 +16,10 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from io import StringIO
 
 # External dependencies.
-from humanfriendly.compat import StringIO, on_windows
+from humanfriendly.compat import on_windows
 from humanfriendly.terminal import ANSI_COLOR_CODES, ANSI_CSI, ansi_style, ansi_wrap
 from humanfriendly.testing import PatchedAttribute, PatchedItem, TestCase, retry
 from humanfriendly.text import format, random_string
