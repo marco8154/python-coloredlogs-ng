@@ -22,6 +22,11 @@ to `semantic versioning`_.
   use colors, so the terminal check was skipped. Passing ``isatty=True`` still
   forces colors. The three tests that were skipped on Windows because of this
   bug run again, and a new test covers it on every platform.
+- :class:`~coloredlogs.StandardErrorHandler` accepts an explicit stream through
+  :meth:`~logging.StreamHandler.setStream()` or by assigning ``stream``. This
+  raised :exc:`AttributeError` before; without an explicit stream the handler
+  still follows the current :data:`sys.stderr` (xolox/python-coloredlogs#125
+  by Nash Aschenbath).
 
 .. _Release 16.1: https://github.com/marco8154/python-coloredlogs-ng/compare/16.0...16.1
 
