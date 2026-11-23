@@ -11,7 +11,7 @@ to `semantic versioning`_.
 .. _Keep a Changelog: http://keepachangelog.com/
 .. _semantic versioning: http://semver.org/
 
-`Release 16.0`_ (unreleased)
+`Release 16.0`_ (2026-11-23)
 ----------------------------
 
 This is the first release of the continuation of :pypi:`coloredlogs`, published
