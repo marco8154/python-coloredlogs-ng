@@ -11,8 +11,8 @@ to `semantic versioning`_.
 .. _Keep a Changelog: http://keepachangelog.com/
 .. _semantic versioning: http://semver.org/
 
-`Release 16.1`_ (unreleased)
----------------------------
+`Release 16.1`_ (2026-11-28)
+----------------------------
 
 **Bug fixes** (these change visible behavior):
 
